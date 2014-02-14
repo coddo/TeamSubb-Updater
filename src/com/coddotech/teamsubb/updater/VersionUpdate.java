@@ -54,11 +54,20 @@ public class VersionUpdate {
 		try {
 			System.out.println("Checking TeamSubb version...");
 
-			BufferedReader reader = new BufferedReader(new FileReader(versionFile.getAbsoluteFile()));
+			String version = "";
+			BufferedReader reader = null;
 
-			String version = reader.readLine();
+			try {
+				reader = new BufferedReader(new FileReader(versionFile.getAbsoluteFile()));
 
-			reader.close();
+				version = reader.readLine();
+
+				reader.close();
+			}
+
+			catch (Exception ex) {
+
+			}
 
 			File newVersionFile = FileDownloader.downloadFile(versionLink);
 
@@ -87,8 +96,6 @@ public class VersionUpdate {
 
 			replaceRepoFiles(downloadFiles(fetchFileLinks()));
 
-			cleanDownloadFolder();
-
 			return true;
 		}
 
@@ -96,6 +103,12 @@ public class VersionUpdate {
 			return false;
 
 		}
+	}
+
+	public static void cleanDownloadFolder() throws Exception {
+		System.out.println("Cleaning directory....");
+
+		FileUtils.cleanDirectory(FileDownloader.DOWNLOAD_DIR);
 	}
 
 	private static String[] fetchFileLinks() throws Exception {
@@ -112,6 +125,13 @@ public class VersionUpdate {
 
 		reader.close();
 
+		// remove empty strings
+		for (int i = 0; i < links.size(); i++)
+			if (links.get(i).isEmpty()) {
+				links.remove(i);
+				i--;
+			}
+
 		return links.toArray(new String[links.size()]);
 	}
 
@@ -127,7 +147,7 @@ public class VersionUpdate {
 				files[i][1] = new File(System.getProperty("user.dir"));
 
 			else
-				files[i][1] = new File(split[1]);
+				files[i][1] = new File(System.getProperty("user.dir") + File.separator + split[1]);
 		}
 
 		return files;
@@ -139,14 +159,10 @@ public class VersionUpdate {
 		for (File[] file : files) {
 			System.out.println("Replacing: " + file[0].getName());
 
-			FileUtils.copyFile(file[0], new File(file[1].getAbsolutePath() + File.separator + file[0].getName()));
+			String newFilePath = file[1].getAbsolutePath() + File.separator + file[0].getName();
+
+			FileUtils.copyFile(file[0], new File(newFilePath));
 		}
-	}
-
-	private static void cleanDownloadFolder() throws Exception {
-		System.out.println("Cleaning directory....");
-
-		FileUtils.cleanDirectory(FileDownloader.DOWNLOAD_DIR);
 	}
 
 	private static void setUpdateLinkBasedOnOS() {
