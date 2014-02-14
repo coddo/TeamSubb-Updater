@@ -10,10 +10,45 @@ import org.apache.commons.io.FileUtils;
 
 public class VersionUpdate {
 
+	private static class PlatformAnalyser {
+
+		private static enum Platform {
+			Windows, Linux;
+		}
+
+		private static Platform operatingSystem = null;
+
+		private static Platform getOS() {
+			if (operatingSystem == null) {
+				String os = System.getProperty("os.name").toLowerCase();
+
+				if (os.indexOf("win") >= 0)
+					operatingSystem = Platform.Windows;
+
+				if (os.indexOf("nux") >= 0)
+					operatingSystem = Platform.Linux;
+
+			}
+
+			return operatingSystem;
+		}
+
+		public static boolean isLinux() {
+			return getOS() == Platform.Linux;
+		}
+
+		public static boolean isWindows() {
+			return getOS() == Platform.Windows;
+		}
+	}
+
 	private static final File versionFile = new File(".version");
 
 	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.version";
-	private static final String filesLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.files";
+	private static final String filesLinkLinux = "https://github.com/coddo/TeamSubb-Updater/raw/master/.linux";
+	private static final String filesLinkWindows = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows";
+
+	private static String filesLink = null;
 
 	public static boolean checkVersion() {
 		try {
@@ -47,6 +82,8 @@ public class VersionUpdate {
 	public static boolean performUpdate() {
 		try {
 			System.out.println("Starting the update procedures...");
+
+			setUpdateLinkBasedOnOS();
 
 			replaceRepoFiles(downloadFiles(fetchFileLinks()));
 
@@ -106,6 +143,15 @@ public class VersionUpdate {
 		System.out.println("Cleaning directory....");
 
 		FileUtils.cleanDirectory(FileDownloader.DOWNLOAD_DIR);
+	}
+
+	private static void setUpdateLinkBasedOnOS() {
+		System.out.println("Analysing operating system...");
+		if (PlatformAnalyser.isLinux())
+			filesLink = filesLinkLinux;
+
+		else if (PlatformAnalyser.isWindows())
+			filesLink = filesLinkWindows;
 	}
 
 }
