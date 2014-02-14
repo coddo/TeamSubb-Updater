@@ -17,6 +17,8 @@ public class VersionUpdate {
 
 	public static boolean checkVersion() {
 		try {
+			System.out.println("Checking TeamSubb version...");
+
 			BufferedReader reader = new BufferedReader(new FileReader(versionFile.getAbsoluteFile()));
 
 			String version = reader.readLine();
@@ -44,6 +46,8 @@ public class VersionUpdate {
 
 	public static boolean performUpdate() {
 		try {
+			System.out.println("Starting the update procedures...");
+
 			replaceRepoFiles(downloadFiles(fetchFileLinks()));
 
 			cleanDownloadFolder();
@@ -58,6 +62,8 @@ public class VersionUpdate {
 	}
 
 	private static String[] fetchFileLinks() throws Exception {
+		System.out.println("Fetching update file links...");
+
 		List<String> links = new ArrayList<String>();
 
 		BufferedReader reader = new BufferedReader(new FileReader(FileDownloader.downloadFile(filesLink)));
@@ -66,7 +72,7 @@ public class VersionUpdate {
 
 		while ((buffer = reader.readLine()) != null)
 			links.add(buffer);
-		
+
 		reader.close();
 
 		return links.toArray(new String[links.size()]);
@@ -75,18 +81,26 @@ public class VersionUpdate {
 	private static File[] downloadFiles(String[] links) throws Exception {
 		File[] files = new File[links.length];
 
-		for (int i = 0; i < links.length; i++)
+		for (int i = 0; i < links.length; i++) {
 			files[i] = FileDownloader.downloadFile(links[i]);
+		}
 
 		return files;
 	}
 
 	private static void replaceRepoFiles(File[] files) throws Exception {
-		for (File file : files)
+		System.out.println("Starting binary replacement...");
+
+		for (File file : files) {
+			System.out.println("Replacing: " + file.getName());
+
 			FileUtils.copyFile(file, new File(file.getName()));
+		}
 	}
 
 	private static void cleanDownloadFolder() throws Exception {
+		System.out.println("Cleaning directory....");
+
 		FileUtils.cleanDirectory(FileDownloader.DOWNLOAD_DIR);
 	}
 

@@ -29,6 +29,8 @@ public class FileDownloader {
 		String protocol = extractProtocol(link);
 		String domain = extractDomain(link, protocol);
 		String fileLink = extractFileLink(link, domain);
+		
+		System.out.println("Downloading file: " + fileName + " from source: " + link);
 
 		return downloadFile(fileName, protocol, domain, fileLink);
 	}
