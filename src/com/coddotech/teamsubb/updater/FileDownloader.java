@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 public class FileDownloader {
 
-	private static final File dir = new File(".update");
+	public static final File DOWNLOAD_DIR = new File(".update");
 
 	/**
 	 * Download a file from the web.
@@ -74,10 +74,10 @@ public class FileDownloader {
 	private static File downloadFile(String fileName, String protocol, String domain, String fileLinkPart)
 			throws Exception {
 
-		if (!dir.exists())
-			dir.mkdir();
+		if (!DOWNLOAD_DIR.exists())
+			DOWNLOAD_DIR.mkdir();
 
-		File file = new File(dir.getAbsolutePath() + File.separator + fileName);
+		File file = new File(DOWNLOAD_DIR.getAbsolutePath() + File.separator + fileName);
 
 		// URI uri = new URI("http", "anime4fun.ro", link.split(Pattern.quote("anime4fun.ro"))[1],
 		// null);
