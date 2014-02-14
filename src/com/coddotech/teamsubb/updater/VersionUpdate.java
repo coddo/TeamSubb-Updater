@@ -78,23 +78,27 @@ public class VersionUpdate {
 		return links.toArray(new String[links.size()]);
 	}
 
-	private static File[] downloadFiles(String[] links) throws Exception {
-		File[] files = new File[links.length];
+	private static File[][] downloadFiles(String[] links) throws Exception {
+		File[][] files = new File[links.length][2];
 
 		for (int i = 0; i < links.length; i++) {
-			files[i] = FileDownloader.downloadFile(links[i]);
+			String[] split = links[i].split("\n");
+
+			files[i][0] = FileDownloader.downloadFile(split[0]);
+
+			files[i][1] = new File(split[1]);
 		}
 
 		return files;
 	}
 
-	private static void replaceRepoFiles(File[] files) throws Exception {
+	private static void replaceRepoFiles(File[][] files) throws Exception {
 		System.out.println("Starting binary replacement...");
 
-		for (File file : files) {
-			System.out.println("Replacing: " + file.getName());
+		for (File[] file : files) {
+			System.out.println("Replacing: " + file[0].getName());
 
-			FileUtils.copyFile(file, new File(file.getName()));
+			FileUtils.copyFile(file[0], new File(file[1].getAbsolutePath() + File.separator + file[0].getName()));
 		}
 	}
 
