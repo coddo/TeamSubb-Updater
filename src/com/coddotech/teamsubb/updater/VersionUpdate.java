@@ -7,7 +7,8 @@ import java.io.FileReader;
 public class VersionUpdate {
 
 	private static final File versionFile = new File(".version");
-	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/.version";
+	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.version";
+	private static final String filesLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.files";
 
 	public static boolean checkVersion() {
 		try {
@@ -25,6 +26,7 @@ public class VersionUpdate {
 
 			return version.equals(newVersion);
 		}
+		
 		catch (Exception e) {
 			return false;
 		}
