@@ -119,11 +119,15 @@ public class VersionUpdate {
 		File[][] files = new File[links.length][2];
 
 		for (int i = 0; i < links.length; i++) {
-			String[] split = links[i].split("\n");
+			String[] split = links[i].split(" ");
 
 			files[i][0] = FileDownloader.downloadFile(split[0]);
 
-			files[i][1] = new File(split[1]);
+			if (split.length == 1)
+				files[i][1] = new File(System.getProperty("user.dir"));
+
+			else
+				files[i][1] = new File(split[1]);
 		}
 
 		return files;
