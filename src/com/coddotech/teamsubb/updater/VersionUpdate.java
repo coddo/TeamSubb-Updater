@@ -90,7 +90,7 @@ public class VersionUpdate {
 			// replace the local version file
 			FileUtils.copyFile(newVersionFile, versionFile);
 
-			return version.equals(newVersion);
+			return (newVersion == null) ? true : version.equals(newVersion);
 		}
 
 		catch (Exception e) {
