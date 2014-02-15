@@ -13,7 +13,7 @@ public class VersionUpdate {
 	private static class PlatformAnalyser {
 
 		private static enum Platform {
-			Windows, Linux;
+			Windows32, Windows64, Linux;
 		}
 
 		private static Platform operatingSystem = null;
@@ -22,8 +22,13 @@ public class VersionUpdate {
 			if (operatingSystem == null) {
 				String os = System.getProperty("os.name").toLowerCase();
 
-				if (os.indexOf("win") >= 0)
-					operatingSystem = Platform.Windows;
+				if (os.indexOf("win") >= 0) {
+
+					if (System.getProperty("sun.arch.data.model").equals("32"))
+						operatingSystem = Platform.Windows32;
+					else
+						operatingSystem = Platform.Windows64;
+				}
 
 				if (os.indexOf("nux") >= 0)
 					operatingSystem = Platform.Linux;
@@ -37,8 +42,12 @@ public class VersionUpdate {
 			return getOS() == Platform.Linux;
 		}
 
-		public static boolean isWindows() {
-			return getOS() == Platform.Windows;
+		public static boolean isWindows32Bit() {
+			return getOS() == Platform.Windows32;
+		}
+
+		public static boolean isWindows64Bit() {
+			return getOS() == Platform.Windows64;
 		}
 	}
 
@@ -46,7 +55,8 @@ public class VersionUpdate {
 
 	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.version";
 	private static final String filesLinkLinux = "https://github.com/coddo/TeamSubb-Updater/raw/master/.linux";
-	private static final String filesLinkWindows = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows";
+	private static final String filesLinkWindowsx32 = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows32";
+	private static final String filesLinkWindowsx64 = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows64";
 
 	private static String filesLink = null;
 
@@ -170,8 +180,11 @@ public class VersionUpdate {
 		if (PlatformAnalyser.isLinux())
 			filesLink = filesLinkLinux;
 
-		else if (PlatformAnalyser.isWindows())
-			filesLink = filesLinkWindows;
+		else if (PlatformAnalyser.isWindows32Bit())
+			filesLink = filesLinkWindowsx32;
+
+		else if (PlatformAnalyser.isWindows64Bit())
+			filesLink = filesLinkWindowsx64;
 	}
 
 }
