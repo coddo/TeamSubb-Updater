@@ -53,10 +53,10 @@ public class VersionUpdate {
 
 	private static final File versionFile = new File(".version");
 
-	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/raw/master/.version";
-	private static final String filesLinkLinux = "https://github.com/coddo/TeamSubb-Updater/raw/master/.linux";
-	private static final String filesLinkWindowsx32 = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows32";
-	private static final String filesLinkWindowsx64 = "https://github.com/coddo/TeamSubb-Updater/raw/master/.windows64";
+	private static final String versionLink = "https://github.com/coddo/TeamSubb-Updater/raw/updates/.version";
+	private static final String filesLinkLinux = "https://github.com/coddo/TeamSubb-Updater/raw/updates/.linux";
+	private static final String filesLinkWindowsx32 = "https://github.com/coddo/TeamSubb-Updater/raw/updates/.windows32";
+	private static final String filesLinkWindowsx64 = "https://github.com/coddo/TeamSubb-Updater/raw/updates/.windows64";
 
 	private static String filesLink = null;
 
